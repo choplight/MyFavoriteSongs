@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Songs</title>
 
+  <!--
+    Page: songs.html
+    Purpose:
+      - Display a list of favorite songs.
+      - Show some example songs.
+      - Load and display saved songs from Web Storage (localStorage).
+      - Provide navigation to Add Song and Home pages.
+  -->
+
   <!-- jQuery + jQuery Mobile -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <link rel="stylesheet" href="https://code.jquery.com/mobile/1.5.0-alpha.1/jquery.mobile-1.5.0-alpha.1.min.css">
@@ -14,75 +23,137 @@
   <link rel="stylesheet" href="themes/lemonade.css">
 
   <script>
-    // Load saved songs from Web Storage and append to the list
-    $(document).on("pagebeforeshow", "#songsPage", function () {
-      const stored = JSON.parse(localStorage.getItem("favoriteSongs") || "[]");
-      const $ul = $("#songsList");
+    // ------------------------------------------------------------
+    // When the Songs page is shown, load favorite songs from
+    // Web Storage (localStorage) and display them in the list.
+    // ------------------------------------------------------------
+    $(document).on("pageshow", "#songs-page", function () {
+      const list = $("#songsList");
 
-      // Remove items we previously injected (keep static examples)
-      $ul.find("li.dynamic").remove();
+      // Clear only the dynamic items if needed (here we keep examples)
+      // This is optional; we assume first few items are static examples.
+      // Everything we add from JavaScript will use a class for clarity.
+      list.find("li.dynamic-song").remove();
 
-      // Append each saved song as a new list item
-      stored.forEach(s => {
-        const title = s.title || "Untitled";
-        const artist = s.artist || "";
-        const genre = s.genre || "";
-        const year = s.year ? s.year : "";
-        const rating = s.rating ? `Rating: ${s.rating}/5` : "";
-        const notes = s.notes ? s.notes : "";
+      // Get saved songs from localStorage
+      const stored = localStorage.getItem("favoriteSongs");
+      if (!stored) {
+        return; // No saved songs yet; nothing to add.
+      }
 
-        const li = `
-          <li class="dynamic">
+      let songs;
+      try {
+        songs = JSON.parse(stored);
+      } catch (e) {
+        console.error("Could not parse favoriteSongs:", e);
+        return;
+      }
+
+      // Add each saved song as a new list item
+      songs.forEach(function (song) {
+        const title = song.title || "Untitled";
+        const artist = song.artist || "";
+        const extra = [];
+
+        if (song.genre) extra.push(song.genre);
+        if (song.year) extra.push(song.year);
+        if (song.rating) extra.push("Rating: " + song.rating);
+        if (song.notes) extra.push("Notes: " + song.notes);
+
+        const line2 = extra.join(" • ");
+
+        const li = $(`
+          <li class="dynamic-song">
             <a href="#">
-              <h2>${title}</h2>
-              <p>
-                ${artist}${artist && genre ? " • " : ""}${genre}
-                ${year ? " • " + year : ""}
-              </p>
-              ${rating || notes ? `<p>${rating}${rating && notes ? " — " : ""}${notes}</p>` : ""}
+              <h2>${title}${artist ? " — " + artist : ""}</h2>
+              ${line2 ? `<p>${line2}</p>` : ""}
             </a>
-          </li>`;
-        $ul.append(li);
+          </li>
+        `);
+
+        list.append(li);
       });
 
-      // Refresh Listview after DOM changes
-      $ul.listview("refresh");
+      // Refresh the listview so jQuery Mobile styles the new items
+      list.listview("refresh");
     });
   </script>
 </head>
 <body>
 
-<div data-role="page" id="songsPage" data-theme="b">
+<!--
+  jQuery Mobile page that lists songs.
+-->
+<div data-role="page" id="songs-page">
 
-  <!-- Header with Back Button -->
+  <!--
+    Header:
+      - Shows title "Favorite Songs".
+      - Has an automatic back button (data-add-back-btn="true").
+      - Back button returns to the previous page.
+  -->
   <div data-role="header" data-add-back-btn="true" data-theme="b">
     <h1>Favorite Songs</h1>
   </div>
 
-  <!-- Filtered List (one item uses a standard icon) -->
+  <!--
+    Main content:
+      - Example songs.
+      - Saved songs loaded from localStorage.
+      - Buttons for navigation.
+  -->
   <div role="main" class="ui-content">
-    <ul data-role="listview"
-        data-inset="true"
-        data-filter="true"
-        data-filter-placeholder="Search songs..."
-        id="songsList">
+    <p>Here are some example favorite songs and any songs you have saved.</p>
 
-      <!-- Example items (static) -->
+    <!--
+      List of songs:
+        - First items are examples.
+        - Additional items are loaded from Web Storage and added with JS.
+    -->
+    <ul data-role="listview" data-inset="true" id="songsList">
+      <!-- Example static song with star icon -->
       <li data-icon="star">
-        <a href="#">Top Hit — “Everlong”</a>
+        <a href="#">
+          <h2>Top Hit — "Everlong"</h2>
+          <p>Foo Fighters</p>
+        </a>
       </li>
       <li>
-        <a href="#">“Levitating” — Dua Lipa</a>
+        <a href="#">
+          <h2>"Levitating"</h2>
+          <p>Dua Lipa</p>
+        </a>
       </li>
       <li>
-        <a href="#">“Dancing Queen” — ABBA</a>
+        <a href="#">
+          <h2>"Dancing Queen"</h2>
+          <p>ABBA</p>
+        </a>
       </li>
-      <!-- Saved items from Web Storage will be appended here -->
+      <!-- Dynamic songs from Web Storage will be appended here. -->
     </ul>
 
-    <!-- Simple links -->
-    <a href="add.html" class="ui-btn ui-corner-all ui-shadow" data-ajax="false">Add a Song</a>
-    <a href="index.html" class="ui-btn ui-corner-all ui-shadow" data-ajax="false">Home</a>
+    <!--
+      Button: Add a Song
+      Action:
+        - User click -> goes to add.html.
+      Result:
+        - Opens the Add Song form page.
+    -->
+    <a href="add.html" class="ui-btn ui-corner-all ui-shadow" data-ajax="false">
+      Add a Song
+    </a>
+
+    <!--
+      Button: Home
+      Action:
+        - User click -> goes to index.html.
+      Result:
+        - Returns to the main home page.
+    -->
+    <a href="index.html" class="ui-btn ui-corner-all ui-shadow" data-ajax="false">
+      Home
+    </a>
   </div>
 
   <!-- Footer -->
