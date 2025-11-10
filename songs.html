@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Songs</title>
+
+  <!-- jQuery + jQuery Mobile -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/mobile/1.5.0-alpha.1/jquery.mobile-1.5.0-alpha.1.min.css">
+  <script src="https://code.jquery.com/mobile/1.5.0-alpha.1/jquery.mobile-1.5.0-alpha.1.min.js"></script>
+
+  <!-- Use ThemeRoller theme files from ZIP -->
+  <link rel="stylesheet" href="themes/lemonade.css">
+
+  <script>
+    // Load saved songs from Web Storage and append to the list
+    $(document).on("pagebeforeshow", "#songsPage", function () {
+      const stored = JSON.parse(localStorage.getItem("favoriteSongs") || "[]");
+      const $ul = $("#songsList");
+
+      // Remove items we previously injected (keep static examples)
+      $ul.find("li.dynamic").remove();
+
+      // Append each saved song as a new list item
+      stored.forEach(s => {
+        const title = s.title || "Untitled";
+        const artist = s.artist || "";
+        const genre = s.genre || "";
+        const year = s.year ? s.year : "";
+        const rating = s.rating ? `Rating: ${s.rating}/5` : "";
+        const notes = s.notes ? s.notes : "";
+
+        const li = `
+          <li class="dynamic">
+            <a href="#">
+              <h2>${title}</h2>
+              <p>
+                ${artist}${artist && genre ? " • " : ""}${genre}
+                ${year ? " • " + year : ""}
+              </p>
+              ${rating || notes ? `<p>${rating}${rating && notes ? " — " : ""}${notes}</p>` : ""}
+            </a>
+          </li>`;
+        $ul.append(li);
+      });
+
+      // Refresh Listview after DOM changes
+      $ul.listview("refresh");
+    });
+  </script>
+</head>
+<body>
+
+<div data-role="page" id="songsPage" data-theme="b">
+
+  <!-- Header with Back Button -->
+  <div data-role="header" data-add-back-btn="true" data-theme="b">
+    <h1>Favorite Songs</h1>
+  </div>
+
+  <!-- Filtered List (one item uses a standard icon) -->
+  <div role="main" class="ui-content">
+    <ul data-role="listview"
+        data-inset="true"
+        data-filter="true"
+        data-filter-placeholder="Search songs..."
+        id="songsList">
+
+      <!-- Example items (static) -->
+      <li data-icon="star">
+        <a href="#">Top Hit — “Everlong”</a>
+      </li>
+      <li>
+        <a href="#">“Levitating” — Dua Lipa</a>
+      </li>
+      <li>
+        <a href="#">“Dancing Queen” — ABBA</a>
+      </li>
+      <!-- Saved items from Web Storage will be appended here -->
+    </ul>
+
+    <!-- Simple links -->
+    <a href="add.html" class="ui-btn ui-corner-all ui-shadow" data-ajax="false">Add a Song</a>
+    <a href="index.html" class="ui-btn ui-corner-all ui-shadow" data-ajax="false">Home</a>
+  </div>
+
+  <!-- Footer -->
+  <div data-role="footer" data-position="fixed" data-theme="b">
+    <h4>© 2025 Favorite Songs Web App</h4>
+  </div>
+</div>
+
+</body>
+</html>

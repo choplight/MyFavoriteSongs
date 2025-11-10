@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add Song</title>
+
+  <!-- jQuery + jQuery Mobile -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/mobile/1.5.0-alpha.1/jquery.mobile-1.5.0-alpha.1.min.css">
+  <script src="https://code.jquery.com/mobile/1.5.0-alpha.1/jquery.mobile-1.5.0-alpha.1.min.js"></script>
+  
+    <!-- Use ThemeRoller theme files from ZIP -->
+  <link rel="stylesheet" href="themes/lemonade.css">
+
+  <script>
+    // Handle form submit -> save to Web Storage (localStorage)
+    $(document).on("submit", "#songForm", function (e) {
+      e.preventDefault();
+
+      const song = {
+        title:  $("#title").val().trim(),
+        artist: $("#artist").val().trim(),
+        genre:  $("#genre").val(),
+        year:   $("#year").val(),
+        rating: $("#rating").val(),
+        notes:  $("#notes").val().trim()
+      };
+
+      const key = "favoriteSongs";
+      const existing = JSON.parse(localStorage.getItem(key) || "[]");
+      existing.push(song);
+      localStorage.setItem(key, JSON.stringify(existing));
+
+      // After saving, go back to the list page
+      window.location.href = "songs.html";
+    });
+  </script>
+</head>
+<body>
+
+<div data-role="page" id="addPage" data-theme="c">
+  <!-- Header with Back Button -->
+  <div data-role="header" data-add-back-btn="true"  data-theme="c">
+    <h1>Add a Song</h1>
+  </div>
+
+  <!-- Form: 5+ fields, 3+ types (text, select, number, range, textarea) -->
+  <div role="main" class="ui-content">
+    <form id="songForm">
+      <div class="ui-field-contain">
+        <label for="title">Song Title</label>
+        <input type="text" id="title" name="title" required>
+      </div>
+
+      <div class="ui-field-contain">
+        <label for="artist">Artist</label>
+        <input type="text" id="artist" name="artist" required>
+      </div>
+
+      <div class="ui-field-contain">
+        <label for="genre">Genre</label>
+        <select id="genre" name="genre">
+          <option value="Pop">Pop</option>
+          <option value="Rock">Rock</option>
+          <option value="R&B">R&amp;B</option>
+          <option value="Country">Country</option>
+          <option value="Indie">Indie</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="ui-field-contain">
+        <label for="year">Year</label>
+        <input type="number" id="year" name="year" min="1900" max="2100" step="1">
+      </div>
+
+      <div class="ui-field-contain">
+        <label for="rating">Rating (1–5)</label>
+        <input type="range" id="rating" name="rating" min="1" max="5" value="3">
+      </div>
+
+      <div class="ui-field-contain">
+        <label for="notes">Notes</label>
+        <textarea id="notes" name="notes" rows="3" placeholder="Why do you like this song?"></textarea>
+      </div>
+
+      <button type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b">Save Song</button>
+    </form>
+
+    <a href="songs.html" class="ui-btn ui-corner-all ui-shadow" data-ajax="false">Back to List</a>
+  </div>
+
+  <!-- Footer -->
+  <div data-role="footer" data-position="fixed"  data-theme="c">
+    <h4>© 2025 Favorite Songs Web App</h4>
+  </div>
+</div>
+
+</body>
+</html>

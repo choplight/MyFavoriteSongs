@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Favorite Songs</title>
+
+  <!-- jQuery + jQuery Mobile -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/mobile/1.5.0-alpha.1/jquery.mobile-1.5.0-alpha.1.min.css">
+  <script src="https://code.jquery.com/mobile/1.5.0-alpha.1/jquery.mobile-1.5.0-alpha.1.min.js"></script>
+
+  <!-- ThemeRoller theme -->
+  <link rel="stylesheet" href="themes/lemonade.css">
+
+  <style>
+    .logo {
+      font-size: 26px;
+      font-weight: bold;
+      color: #2A9D8F;
+      text-align: center;
+      margin: 20px 0 10px 0;
+    }
+    .logo span {
+      font-size: 32px;
+      color: #F4A261;
+      vertical-align: middle;
+    }
+    .ui-content {
+      text-align: center;
+    }
+    footer {
+      text-align: center;
+      font-size: 14px;
+      padding: 10px 0;
+    }
+    .song-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 20px auto;
+      max-width: 900px;
+      text-align: left;
+    }
+    .song-grid .ui-btn {
+      width: 100%;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Home Page (only ONE page div) -->
+  <div data-role="page" id="home" data-theme="a">
+
+    <!-- LEFT OVERLAY PANEL -->
+    <div data-role="panel"
+         id="nav-panel"
+         data-display="overlay"
+         data-position="left">
+      <h3>Menu</h3>
+      <a href="./songs.html" class="ui-btn ui-corner-all ui-shadow" data-ajax="false">
+        View Favorite Songs
+      </a><br>
+      <a href="./add.html" class="ui-btn ui-corner-all ui-shadow" data-ajax="false">
+        Add a Song
+      </a>
+    </div>
+
+    <!-- Header Section (this is the header, not a page) -->
+    <div data-role="header" data-theme="a">
+      <a href="#nav-panel"
+         class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars">
+        Menu
+      </a>
+      <h1>Favorite Songs</h1>
+    </div>
+
+    <!-- Logo + Main Content -->
+    <div role="main" class="ui-content">
+      <div class="logo">🎵 Favorite <span>Songs</span></div>
+
+      <p>Welcome! Explore my collection of favorite songs by category below.</p>
+
+      <div class="song-grid">
+        <a href="#" class="ui-btn ui-corner-all ui-shadow">Top Hits</a>
+        <a href="#" class="ui-btn ui-corner-all ui-shadow">Pop Favorites</a>
+        <a href="#" class="ui-btn ui-corner-all ui-shadow">Oldies</a>
+        <a href="#" class="ui-btn ui-corner-all ui-shadow">Alternatice Legends</a>
+        <a href="#" class="ui-btn ui-corner-all ui-shadow">Folk Picks</a>
+        <a href="#" class="ui-btn ui-corner-all ui-shadow">Indie Gems</a>
+      </div>
+
+      <a href="./songs.html" class="ui-btn ui-corner-all ui-shadow" data-ajax="false">View Songs</a>
+      <a href="./add.html"   class="ui-btn ui-corner-all ui-shadow" data-ajax="false">Add a Song</a>
+    </div>
+
+    <!-- Footer Section -->
+    <div data-role="footer" data-theme="a">
+      <footer>© 2025 Favorite Songs Web App</footer>
+    </div>
+
+  </div>
+</body>
+</html>
