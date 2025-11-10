@@ -1,12 +1,21 @@
 WEBSITE STRUCTURE:
+
 HOME PAGE/
+
 │
+
 ├── index.html           # Homepage
+
 ├── songs.html           # favorite songs page
+
 ├── add.html         # add songs to favorite songs page
+
 │
+
 ├── css/
+
     └── lemonade.css   
+    
 
 
     ## Button Descriptions and User Actions
